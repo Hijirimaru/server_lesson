@@ -5,21 +5,20 @@ services:
       context: ./php-apache
       dockerfile: Dockerfile
     ports:
-      - [ 1 ]:[ 2 ]
+      - 8888:80 #[1]:[2]
     volumes:
       - type: bind
-        source: [ 3 ]
+        source: "./php-apache/000-default.conf" #[3]
         target: "/etc/apache2/sites-enabled/000-default.conf"
       - type: bind
         source: "./php-apache/app"
-        target: [ 4 ]
+        target: "/var/www/docker_review" #[4]
     depends_on:
       - review-mysql
 
   review-mysql:
-    image: [ 5 ]
+    image: 'mysql:8.0' #[5]
     environment:
       - MYSQL_ROOT_PASSWORD=e2QNqCUd
       - MYSQL_DATABASE=docker_review
-    # platform: linux/amd64  M1チップのmacを使用している場合はこちらをコメントインしてください
-
+    platform: linux/amd64
